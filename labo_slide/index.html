@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>スライドページ目次</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/serif.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<ul>
+					<font size=8>
+						<li><a href="#/research-list">進捗報告</a></li>
+						<li><a href="#/paper-list">論文紹介</a></li>
+						<li><a href="#/study-index">勉強まとめ</a></li>
+						<li><a href="#/etc">その他</a></li>
+					</font>
+					</ul>
+				</section>
+
+				<!-- 進捗報告 -->
+				<section id="research-list">
+					<ul>
+					<font size=6>
+						<li><a href="progress01.html">2018/10/25</a></li>
+					</font>
+					</ul>
+				</section>
+
+				<!-- ____________________________勉強まとめ____________________________ -->
+				<section id="study-index">
+					<ul>
+					<font size=8>
+						<li><a href="#/machine-learning">データ分析と機械学習</a></li>
+						<li><a href='#/optimization_problem'>数理最適化問題</a></li>
+						<li><a>その他</a></li>
+					</font>
+					</ul>
+				</section>
+
+				<!-- 機械学習 -->
+				<section id="machine-learning">
+					<h3>データ分析と機械学習</h3>
+					<ul>
+					<font size=6>
+						<li><a href='pca.html'>主成分分析とカーネル主成分分析</a></li>
+						<li><a href='gradient_method.html'>勾配法と更新方法のまとめ</a></li>
+						<li><a href="linear_classification.html">線形識別モデル</a></li>
+						<li><a href="linear_regression.html">線形回帰モデル</a></li>
+					</font>
+					</ul>
+				</section>
+
+				<!-- 最適化問題 -->
+				<section id="optimization_problem">
+					<h3>最適化問題</h3>
+					<ul>
+					<font size=6>
+						<li><a href="dual_svm.html">SVMと双対問題とカーネルトリック</a></li>
+					</font>
+					</ul>
+				</section>
+
+				<!-- 論文紹介 -->
+				<section id="paper-list">
+					<ul>
+					<font size=6>
+						<li><a href='#'>AAA</a></li>
+					</font>
+					</ul>
+				</section>
+
+				<!-- その他 -->
+				<section id="etc">
+					<ul>
+					<font size=8>
+						<li><a href='http://www.jaist.ac.jp/~s1810131/shuntomi/about.html'>自己紹介と個人ページへのリンク</a></li>
+						<li><a href='lastyear_summary.html'>去年勉強した事のまとめ</a></li>
+						<li><a href='intro_for_beginner.html'>情報系じゃない人に役立ちそうな事まとめ</a></li>
+						<li><a href='benkyoukai.html'>Deep Learning勉強会資料(LSTM+ESN)</a></li>
+					</font>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				controls: false,
+				transition: 'convex',
+				keyboard: false,
+
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
