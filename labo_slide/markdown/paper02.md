@@ -6,7 +6,26 @@
 ## 参考文献
 * **De Felice, Domenico, and Francesco Camastra. "Kendon Model-Based Gesture Recognition Using Hidden Markov Model and Learning Vector Quantization." Italian Workshop on Neural Nets. Springer, Cham, 2017.**
 * 矢田部学. "クォータニオン計算便利ノート." MSS 技報 (18) (2007): 29-34.
-* https://www.tutorialspoint.com/artificial_neural_network/artificial_neural_network_learning_vector_quantization.htm
+* Kohonen, T., Hynninen, J., Kangas, J., Laaksonen, J., Torkkola, K.: Lvq-pak: The learning vector quantization program package. In: Technical Report A30, Helsinki University of Technology, Laboratory of Computer and Information Science (1996)
+
+---
+
+### 前回の論文との違い
+* G-nuitの検出は同じ
+* 今回は何のジェスチャーだったを当てる事が目標
+
+---
+
+かなりラフに書いてある論文だったので、
+
+使っていた手法の説明もそれなりにしようと思います。
+
+---
+
+## Key ward
+* 四元数(軽く説明する)
+* LVQ(学習ベクトル量子化)
+* HMMとバームウェルチアルゴリズム
 
 ---
 
@@ -15,7 +34,7 @@
 1. Introduction
 1. Kendonモデル
 1. ジェスチャ認識器
-1. 実験結果
+1. 実験設定と結果
 1. Conclution
 
 ---
@@ -24,10 +43,10 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 
 以下の4つで構成されている．
 
-* Kinect,NITEライブラリによる骨格表現を使用した特徴量抽出
-* LVQによる開始と終了時のハンドポーズの検知
-* 次元削減
-* 隠れマルコフモデルによるジェスチャー分類
+1. Kinect,NITEライブラリによる骨格表現を使用した特徴量抽出
+1. LVQによる開始と終了時のハンドポーズの検知
+1. PCAによる次元削減
+1. 隠れマルコフモデルによるジェスチャー分類
 
 最後に既存のジェスチャー認識器と，精度の比較を行う．
 
@@ -38,13 +57,12 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 1. <font color="Red">Introduction</font>
 1. Kendonモデル
 1. ジェスチャ認識器
-1. 実験結果
+1. 実験設定と結果
 1. Conclution
 
 ---
 
 ### ジェスチャーの種類
-ジェスチャーは2つに分類できる．
 * 静的ジェスチャー
     * 静的ジェスチャーはハンドポーズとも呼ばれる．
     * ハンドポーズは形状と向きに関連する．
@@ -57,7 +75,7 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 
 人間の動的ジェスチャーを記述できるモデルの一つがKendonモデルである．
 
-この論文の目的はKendonモデルを前提とした，
+この論文の目的はKendonモデルを前提とし，
 
 動的ジェスチャー認識器を構築する事である．
 
@@ -65,8 +83,8 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 
 この認識器は2つのタスクに分けられる．
 
-1. 始点と終点の検知．
-2. 認識されたジェスチャーの分類．
+1. 始点と終点の検知(G-unitの検出)
+2. 認識されたジェスチャーの分類
 
 ---
 
@@ -75,7 +93,7 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 1. Introduction
 1. <font color="Red">Kendonモデル</font>
 1. ジェスチャ認識器
-1. 実験結果
+1. 実験設定と結果
 1. Conclution
 
 ---
@@ -89,7 +107,7 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 
 ---
 
-### ジェスチャーフェーズの詳細
+### ジェスチャーフェーズの詳細(復習)
 1. 準備: 手がジェスチャの開始位置まで移動
 1. プレストローク: 準備の終了と同時に，手の形と位置を維持したまま一時停止
 1. ストローク: ジェスチャーの意味を表す動き
@@ -108,14 +126,14 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 1. Introduction
 1. Kendonモデル
 1. <font color="Red">ジェスチャー識別器</font>
-1. 実験結果
+1. 実験設定と結果
 1. Conclution
 
 ---
 
-### 4. ジェスチャ識別器
+### 4. ジェスチャ識別器の構成
 1. <font color="Red">特徴量抽出</font>
-1. LVQによるレストポジションの特定
+1. LVQによるレストポジションとリトラクションの特定
 1. 次元削減
 1. HMMによる動的ジェスチャー分類
 
@@ -124,13 +142,16 @@ Kendonモデルによるジェスチャー認識器の構築を目指す．
 ### 補足:　四元数(クォータニオン)
 このあと，**四元数**が登場するので簡単に補足しておきます．
 
-四元数を使うと3次元での回転計算が簡単に行えます．
+四元数を使うと，数学的なメリットが多くあるそうです．
+
+代表的な例は、3次元での回転計算です
 
 ---
 
 ### 四元数の定義
 
 四元数$\boldsymbol{q}$は以下のように定義されます．
+
 \begin{equation}
     \boldsymbol{q} = q\_0 + q\_1 i + q\_2 j + q\_3 k
 \end{equation}
@@ -155,25 +176,32 @@ $q\_0,q\_1,q\_2,q\_3 \in \mathbb{R}$
 
 ### (ex)四元数による利点: 回転
 
-四元数における単位ベクトル$\boldsymbol{n}=\left( q\_1,q\_2,q\_3\right)$を軸とした，角度$\theta$の回転を考える．
+単位ベクトル$\boldsymbol{n}=\left( q\_1,q\_2,q\_3\right)$を軸とした，角度$\theta$の回転を考える．
 
 この時回転を表す四元数は，
 
 \begin{equation}
-    q = \cos{\frac{\theta}{2}} + \left( q\_{1} i + q\_{2} j + q\_{3} k \right) \sin{\frac{\theta}{2}}
+    \boldsymbol{q} = \cos{\frac{\theta}{2}} + \left( q\_{1} i + q\_{2} j + q\_{3} k \right) \sin{\frac{\theta}{2}}
 \end{equation}
 
 で表現される．
 
 ---
 
-この$\boldsymbol{q}$を使い以下の式に従えば，
+### 四元数による回転計算
 
-ベクトル$\boldsymbol{x}$を，任意の方向に回転させる事ができる．
+まず，ベクトル$\boldsymbol{x} = \left( x\_{1}, x\_{2}, x\_{3} \right)$から
+
+四弦数　$\boldsymbol{x\_{q} } = 0 + x\_{1}i + x\_{2} j + x\_{3}k $を求める．
+
+このとき，ベクトル$\boldsymbol{x}$の回転先のベクトルは
 
 \begin{equation}
-    \boldsymbol{q} \boldsymbol{x} \boldsymbol{\overline{q}}
+    \boldsymbol{q} \boldsymbol{x_q} \boldsymbol{\overline{q}}
 \end{equation}
+
+という簡単な式で記述する事ができる．
+
 
 ---
 
@@ -184,16 +212,17 @@ $q\_0,q\_1,q\_2,q\_3 \in \mathbb{R}$
 
 話を戻します．三次元ベクトルから四元数が求まる事を覚えておいてください．
 
-今は特徴量を抽出する事が目標です．
+今は特徴量を抽出する事が目標でした．
 
 ---
 
-Kinectを使用する．なおリフレッシュレートは$50Hz$とした．
+Kinectを使用する．なおリフレッシュレートは$50Hz$．
 
 特徴量抽出は以下の2つのステップに分けられる．
 
-1. NITEライブラリによる，ジェスチャー部分の骨格表現の抽出(16部位の座標or四元数が得られる)
-1. その中から動的ジェスチャーに寄与する部分をを選ぶ
+1. NITEライブラリによる，ジェスチャー部分の骨格表現の抽出
+    * 16部位の座標or四元数が得られる
+1. 今回は手と肘部分の特徴量を使用する．
 
 ---
 
@@ -206,16 +235,25 @@ Kinectを使用する．なおリフレッシュレートは$50Hz$とした．
 
 * 両手の座標(3 $\times$ 2)
 * 両肘の座標(3 $\times$ 2)
-* 両手の四元数(4 $\times$ 2)
 * 両肘の四元数(4 $\times$ 2)
 
 ---
 
 ### 4. ジェスチャ識別器
 1. 特徴量抽出
-1. <font color="Red">レストポジションの特定</font>
+1. <font color="Red">レストポジションとリトラクションの特定</font>
 1. 次元削減
 1. HMMによる動的ジェスチャー分類
+
+---
+
+ここまでで，各フレームに対して特徴ベクトルを付与する事ができました．
+
+次は，ジェスチャーの部分に対応するフレームを特定する事を目指します．
+
+すなわち，レストポジションを特定する事が目標です．
+
+今回はLVQを使ってこの問題を解きます．
 
 ---
 
@@ -223,8 +261,8 @@ Kinectを使用する．なおリフレッシュレートは$50Hz$とした．
 * 教師あり学習の一種
 * クラスの代表点(参照ベクトル)を選びたい
 * いくつかバージョンがある
-* 今回使うのはLVQ1,LVQ2,LVQ3
-* K-meanに似てる
+    * 今回使うのはLVQ1とLVQ2.1
+* K-meanとk-NNに似てる
 
 ---
 
@@ -233,20 +271,144 @@ Kinectを使用する．なおリフレッシュレートは$50Hz$とした．
 ---
 
 ### 記号の準備
-* 入力ベクトル: $\boldsymbol{x}=\left( x_1, x_2, \dots, x_n \right)$
+* 時刻$t$の入力ベクトル: $\boldsymbol{x}\(t\)=\left( x_1, x_2, \dots, x_n \right)$
+* 入力データ系列: $X=\(\boldsymbol{x_1},\dots,\boldsymbol{x_n} \)$
 * $\boldsymbol{x}$のラベル: $T$
 * クラス数: $C$
 * クラスCの代表ベクトル: $\boldsymbol{m_c}$
 
 ---
 
-#### LVQ1のアルゴリズム
+#### LVQ-1アルゴリズムの概要
 1. 代表ベクトル$\boldsymbol{m_i}$を初期化  $\(i=1,\dots,C\)$
-1. $c= arg\displaystyle\min\_{i}\(\| \boldsymbol{x}-\boldsymbol{m\_i} \|\)$
-1. $\boldsymbol{m\_i}\(t+1\) = \boldsymbol{m\_i}\(t\) - \alpha\(t\) \left(\boldsymbol{x}\(t\)-\boldsymbol{m\_i}\(t\)\right) \quad \(cが正しい時\)$
-1. $\boldsymbol{m\_i}\(t+1\) = \boldsymbol{m\_i}\(t\) + \alpha\(t\) \left(\boldsymbol{x}\(t\)-\boldsymbol{m\_i}\(t\)\right) \quad \(cが正しく無い時\)$
+1. すべての$\boldsymbol{x}$に対して，どの$\boldsymbol{m_i}$に近いかを計算する．
+1. 正しく分類出来たかどうかで，代表ベクトルを更新する
+    1. $\boldsymbol{m\_i} \gets \boldsymbol{m\_i} + \alpha \left(\boldsymbol{x}\(t\)-\boldsymbol{m\_i} \right) \quad \(正しい時\)$
+    1. $\boldsymbol{m\_i} \gets \boldsymbol{m\_i} - \alpha \left(\boldsymbol{x}\(t\)-\boldsymbol{m\_i} \right) \quad \(正しく無い時\)$
 
 ただし$0 < \alpha < 1$
+
+>>>
+
+<img src="./image/paper02/lvq1.png" width="500"></img>
+### LVQ-1の解説
+
+---
+
+次にLVQ-2.1の説明をします．
+
+基本的にはLVQ-1の適応後に使用されます．
+
+LVQ-2.1は代表ベクトルが一度に2つ更新します．
+
+---
+
+### 記号の準備
+* $\boldsymbol{m_i}$ : **ラベルの異なる**$\boldsymbol{x}$に一番近い代表ベクトル
+* $d_i$ : $\boldsymbol{x}$と$\boldsymbol{m_i}$の距離
+* $\boldsymbol{m_j}$ : **ラベルが一致している**$\boldsymbol{x}$に一番近い代表ベクトル
+* $d_j$ : $\boldsymbol{x}$と$\boldsymbol{m_j}$の距離
+* $N$ : サンプルデータ数
+* $w$ : ウィンドウサイズを表す定数($0.2 \sim 0.3$が推奨される)
+
+---
+
+### LVQ-2.1アルゴリズムの概要
+
+1. $\min{\(\frac{d_i}{d_j}, \frac{d_j}{d_i}\)} > \frac{1-w}{1+w}$　なら以下の更新をする
+    1. $\boldsymbol{m\_i} \gets \boldsymbol{m\_i} - \alpha \left(\boldsymbol{x}\(t\)-\boldsymbol{m\_i} \right) \quad $
+    1. $\boldsymbol{m\_j} \gets \boldsymbol{m\_j} + \alpha \left(\boldsymbol{x}\(t\)-\boldsymbol{m\_j} \right) \quad $
+
+簡単に言うと，クラス間距離を大きくしようとしています
+
+---
+
+### パラメータチューニングと実験
+* 13個の異なるストロークからなるデータセットによってパラメータを決定
+* 次にG-unitに含まれているかどうかを調べる
+* 20次元の特徴量を前モジュールから受け取り，分類する．
+
+---
+
+<img src="./image/paper02/fig16_2.png" width="600"></img>
+### LVQ用学習データ
+
+---
+
+### 4. ジェスチャ識別器
+1. 特徴量抽出
+1. レストポジションの特定
+1. <font color="Red">次元削減</font>
+1. HMMによる動的ジェスチャー分類
+
+---
+
+このステップでは,前のステップから20次元の特徴ベクトルを受け取り，
+
+PCAを用いて次元削減をします．
+
+PCAの説明は省略します．[PCAの資料のリンク](https://shuntomi.github.io/labo_slide/pca.html)
+
+>>>
+
+### 主成分分析のおさらい
+1. データ集合から共分散行列$\mathrm{S}$を求める
+1. $\mathrm{S}\mathrm{u} = \lambda \mathrm{u}$の固有値問題を解く
+1. 大きい順に$M$個の固有値に対応する固有ベクトルから主成分を求める
+1. 各データに対して$M$個の主成分で基底変換した座標をもとめる
+
+---
+
+### PCAの実験結果
+* 第二主成分までで累積寄与率が$60%$
+* 第五主成分までで累積寄与率が$90%$
+
+今回は複雑さ回避のため，第二主成分までを使う事にする．
+
+---
+
+### 4. ジェスチャ識別器
+1. 特徴量抽出
+1. レストポジションの特定
+1. 次元削減
+1. <font color="Red">HMMによる動的ジェスチャー分類</font>
+
+---
+
+最後は，次元削減後の特徴ベクトルを使って，
+
+そのジェスチャーが何のジェスチャーを表しているのかを推定します．
+
+なお，ジェスチャーの総数は既知とします．
+
+---
+
+要するに特徴量を入力とした
+
+他クラス問題として扱います．
+
+今回はHMMを使ってこの問題を解きます．
+
+---
+
+説明は大変なのでサラッと説明します．
+
+[HMMの解説ページ](hmm.html)
+
+---
+
+### HMM概要
+* 確率モデルを近似できる
+* いくつか種類があり，今回使うのはleft to right 型
+* 使うためにはパラメータを決める必要がある
+
+---
+
+### バウムウェルチアルゴリズム
+* HMMのバラメータを学習できる
+* 基本的にはEMアルゴリズムと同じ
+* N個の多クラス問題を解くにはN個のHMMを準備する
+    * その中で最大確率を出力するクラスを選択する
 
 ---
 
@@ -255,17 +417,35 @@ Kinectを使用する．なおリフレッシュレートは$50Hz$とした．
 1. Introduction
 1. Kendonモデル
 1. ジェスチャ認識器
-1. <font color="Red">実験結果</font>
+1. <font color="Red">実験設定と結果</font>
 1. Conclution
 
 ---
 
+### データセット
+* 8種類のジェスチャーを100回ずつ行って作成
+* 訓練データとテストデータは半分ずづに分ける
+
+---
+
 ## 目次
 1. Abstract
 1. Introduction
 1. Kendonモデル
 1. ジェスチャ認識器
-1. 実験結果
+1. 実験設定と結果
 1. <font color="Red">Conclution</font>
 
 ---
+
+### 筆者による主張
+* 提案手法は他の手法より精度が優れいてた
+* 将来的には日常生活での周囲支援における導入が期待できる
+
+---
+
+### 個人的に思った事
+* もうちょいちゃんと書いて欲しかった
+* 特徴量として四元数を使う動機
+* LVQの他の手法に対する優位性
+* PCAの累積寄与率が60%は少し気になる
