@@ -426,7 +426,90 @@ PCAの説明は省略します．[PCAの資料のリンク](https://shuntomi.git
 
 ---
 
-### バウムウェルチアルゴリズム
+### 具体例(wikiより)
+* アリスとボブは遠距離で連絡を取り合っている
+* ボブ
+    * 毎日天気(潜在変数)を参考にwalk,shop,cleanのどれかの行動を取る
+    * 毎日どの行動をとったかをアリスに報告する(実際の天気については教えない)
+* アリス
+    * ボブから連絡を受け，どの行動をとったかを知る()
+    * 一般的な天気の変化の情報は持っている(潜在変数の状態遷移確率を知っている)
+
+これをHMMとしてモデル化してみる
+
+---
+
+<img src="./image/HMM/HMM.png" width="500"></img>
+### HMMの例
+
+赤矢印と青矢印はアリスによる推測結果
+
+---
+
+### HMMの一般的なパラメータ
+* $ x\_t \in \\{ v\_1,v\_2,\dots ,v\_m \\}$　:　時刻$t$での観測結果
+* $\boldsymbol{x} = x_1 x_2 \dots x_n$　:　入力系列
+* $ s\_t \in \\{ \omega\_1,\omega\_2,\dots ,\omega\_c \\}$　:　時刻$t$での状態
+* $\boldsymbol{s} = s_1 s_2 \dots s_n$　:　状態系列 (HMMではこれは観測出来ない)
+* $a_{ij}$　:　$w_i$から$w_j$への状態遷移確率
+* $\boldsymbol{A}$　:　$a_{ij}$の集合　
+* $b_{jk}$　:　$w_j$で$v_k$を出力する確率
+* $\boldsymbol{B}$　:　$b_{ij}$の集合
+* $\rho_i$　:　初期状態が$\omega_i$である確率
+* $\boldsymbol{\rho}$　:　$\\{\rho\_1,\rho\_2,\dots,\rho\_c\\}$
+
+---
+
+まずHMMの各パラメータは既知として，
+
+今入力$\boldsymbol{x}=x_1 x_2 \dots x_n$があるクラスに属している確率を考えます．
+
+$P\(\boldsymbol{x}\)= \sum_{s}{P\(\boldsymbol{x},s\)} $であり，
+
+これは$P\(\boldsymbol{x}, s\) = \displaystyle \prod\_{t=1}^n {a\(s\_{t-1},s\_{t}\) b\(s\_{t},x\_{t}\)}$
+
+が計算できれば求める事ができます
+
+---
+
+しかしHMMでは$\boldsymbol{s}$は観測する事ができないので計算量が膨大になります．
+
+ここで少し変形して,$t$回目の観測結果の前後に分離させます．
+
+\begin{align}
+    P\(\boldsymbol{x}, s\_t =\omega\_i \) &= P\(x\_1 x\_2 \dots x\_t, s\_t = \omega\_i \)P\(x\_{t+1} x\_{t+2} \dots x\_n | s\_t = \omega\_i \) \\\
+    & = \alpha\_t\(i\) \beta\_t\(i\)
+\end{align}
+
+と変形します．
+
+---
+
+この$\alpha\_t\(i\) \beta\_t\(i\)$を状態$s$を使わずに推定するアルゴリズムを
+
+それぞれフォワードアルゴリズム，バックワードアルゴリズムと呼びます．
+
+---
+
+### フォワードアルゴリズム
+1. 初期化
+    * $\alpha_1\(i\) = \rho_ib\( \omega_i,x_i \)$
+2. $\alpha$の再帰計算
+    * $\alpha\_t\(j\) = \left( \displaystyle \sum\_{i=i}^{c} {\alpha\_{t-1}\(i\) a\_{ij} }\right) b\(\omega_j, x_t\)$
+3. $P\(\boldsymbol{x}\)$の計算
+    * $P\(\boldsymbol{x}\) = \displaystyle \sum\_{i=i}^{c} {\alpha\_{n}\(i\)}$
+
+---
+
+### バックワードアルゴリズム
+1. 初期化
+    * $\beta_n\(i\) = 1$
+2. $\alpha$の再帰計算
+    * $\beta\_t\(i\) = \displaystyle \sum\_{j=i}^{c} {a\_\{ij} b\(\omega\_j, x\_{t+1}\) \beta\_{t+1}\(j\) }$
+
+---
+
+### バウムウェルチアルゴリズムの概要
 * HMMのバラメータを学習できる
 * 基本的にはEMアルゴリズムと同じ
 * それ以外に前向きアルゴリズムと後ろ向きアルゴリズムを使う
@@ -434,10 +517,28 @@ PCAの説明は省略します．[PCAの資料のリンク](https://shuntomi.git
 
 ---
 
+### バウムウェルチアルゴリズム-1
+1. $\boldsymbol{A}, \boldsymbol{B}, \boldsymbol{\rho}$を初期化する
+1. フォワードとバックワードで$\alpha$と$\beta$を計算
+
+---
+
+
+### 3. 以下の式に従ってHMMのパラメータを更新
+\begin{align}
+    \hat{\alpha}\_{ij} =& \frac{ \displaystyle \sum\_{t=1}^{n-1}{\alpha\_t\(i\) a\_{ij}} b\(\omega\_j,x\_{t+1}\)\beta\_{t+1}\(j\) }{ \displaystyle \sum\_{t=1}^{n-1}{\alpha\_t\(i\) \beta\_t\(i\) } } \\\
+    \hat{\beta}\_{ij} =& \frac{ \displaystyle \sum\_{t=1}^{n-1}{ \delta\(x\_t,v\_{k}\) \alpha\_t\(j\) \beta\_{t+1}\(j\) }}{ \displaystyle \sum\_{t=1}^{n-1}{\alpha\_t\(j\) \beta\_t\(j\) } } \\\
+    \hat{\rho}\_{i} =& \frac{\alpha\_1\(i\)\beta\_1\(i\)}{\displaystyle \sum\_{j=1}^{c}{\alpha\_n\(j\)} }
+\end{align}
+
+---
+
 
 バウムウェルチアルゴリズムを使っってHMMの学習を行えば
 
 多クラス問題を解く事ができます．
+
+今回は8クラスの教師なし学習を行う事になります．
 
 ---
 
