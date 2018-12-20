@@ -1,5 +1,5 @@
 # Kendon Model-Based Gesture Recognition Using Hidden Markov Model and Learning Vector Quantization
-### 2018/12/06 富澤駿
+### 2018/12/20 富澤駿
 
 ---
 
@@ -593,6 +593,7 @@ $P\(\boldsymbol{x}\)= \sum_{s}{P\(\boldsymbol{x},s\)} $であり，
 
 ### 個人的に思った事
 * もうちょいちゃんと書いて欲しかった
+* 画像ベースのハンドポーズ認識器以外と比較して欲しかった．
 * 特徴量として四元数を使う動機
 * LVQの他の手法に対する優位性
 * PCAの累積寄与率が60%は少し気になる
