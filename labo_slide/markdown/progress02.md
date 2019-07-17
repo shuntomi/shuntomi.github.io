@@ -1,23 +1,55 @@
 # 進捗報告
-### 2018 10/25
+### 2019 7/18
 ### 富澤駿
 
 ---
 
-## Reference
-* McNeill D. "Hand and mind: What the hands reveal about thought." University of Chicago Press, Chicago, IL, USA (1992)
-* Kendon, Adam. "Gesticulation and speech: Two aspects of the process of utterance." The relationship of verbal and nonverbal communication 25.1980 (1980): 207-227.
-* Mitra, Sushmita, and Tinku Acharya. "Gesture recognition: A survey." IEEE Transactions on Systems, Man, and Cybernetics, Part C (Applications and Reviews) 37.3 (2007): 311-324.
+## Abstract
+* 機械対コンピュータのインターフェイス向上に貢献したい
+* ジェスチャは場面によって何かしらの機能を持っており，それを推定できるモデル構築したい
+* 先行研究はジェスチャー自体の認識やジェスチャーフェーズの認識を目的としている物が多い
+* 先行研究に対しては，以下の新規性があると思われる．
+  * ジェスチャーフェーズを入力とした，機能ラベルの推定
+    * 機能ラベルは専門家によって，ストローク部分にラベル付けされている．
+  * ストーリーテリングにおいて，自然に発生したジェスチャーを使用している
+    * 実際に人間に対して説明を行い，聞き手の音声
 
 ---
 
-## 研究の目標
-* 機械対コンピュータのインターフェイス向上に貢献したい
-* そのため，ジェスチャの意味を認識できるモデル構築したい
-* 先行研究はほどんど無かった
-* 似た研究に対しては，以下の新規性があると思われる．
-  * 持っているデータが特殊
-  * **意味ラベルまでの推定を行う**
+## Background
+*　
+
+
+---
+
+## Related work
+
+---
+
+## 目的
+
+---
+
+## 本研究の流れ
+
+---
+
+## データセットについて
+
+---
+
+## 前回までの進捗
+
+---
+
+## 現在までの進捗
+* 関連論文調査
+* **ジェスチャに対する知識の補完(認知科学，社会科学)**
+* その他手法の復習(HMM,SVM,カーネルトリック,双対問題)
+
+---
+
+## 日程経過と進捗実態
 
 ---
 
@@ -105,4 +137,6 @@
 
 ---
 
-[論文紹介へ続く](../paper03.html)
+
+
+---
