@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9eb1ee36-dca5-4c8f-8591-393d8e4e5398" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markdown/paper02.md" beforeDir="false" afterPath="$PROJECT_DIR$/markdown/paper02.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markdown/progress01.md" beforeDir="false" afterPath="$PROJECT_DIR$/markdown/progress01.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markdown/progress02.md" beforeDir="false" afterPath="$PROJECT_DIR$/markdown/progress02.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progress02.html" beforeDir="false" afterPath="$PROJECT_DIR$/progress02.html" afterDir="false" />
-    </list>
+    <list default="true" id="9eb1ee36-dca5-4c8f-8591-393d8e4e5398" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,8 +62,8 @@
         <entry file="file://$PROJECT_DIR$/markdown/progress02.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="523">
-                <caret line="167" column="26" selection-start-line="167" selection-start-column="26" selection-end-line="167" selection-end-column="26" />
+              <first_editor relative-caret-position="675">
+                <caret line="203" lean-forward="true" selection-start-line="203" selection-end-line="203" />
               </first_editor>
               <second_editor />
             </state>
@@ -183,16 +177,15 @@
       <workItem from="1545293020824" duration="274000" />
       <workItem from="1562209909909" duration="1281000" />
       <workItem from="1563327955239" duration="15424000" />
-      <workItem from="1563345724174" duration="2915000" />
+      <workItem from="1563345724174" duration="3263000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74530000" />
+    <option name="totallyTimeSpent" value="74878000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.12832801" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -344,8 +337,8 @@
     <entry file="file://$PROJECT_DIR$/markdown/progress02.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="523">
-            <caret line="167" column="26" selection-start-line="167" selection-start-column="26" selection-end-line="167" selection-end-column="26" />
+          <first_editor relative-caret-position="675">
+            <caret line="203" lean-forward="true" selection-start-line="203" selection-end-line="203" />
           </first_editor>
           <second_editor />
         </state>
