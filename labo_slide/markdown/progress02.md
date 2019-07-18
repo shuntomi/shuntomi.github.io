@@ -64,7 +64,7 @@
 * SSPサーベイ[Vinciarelli et al.,2009]
 * ジェスチャーとコミュニケーション[Mcneel 1992]
 * ジェスチャーの構造に関して[Kendon 2004]
-* ジェスチャーの機能[]
+* ジェスチャーの機能[斉藤・喜多 2002]
 
 ---
 
@@ -74,23 +74,6 @@
 * CNNLSTMによるジェスチャー認識(画像シーケンス)[Tsironi et al.,2017]
 * ロジスティック回帰によるジェスチャースローク(手の位置，角度，座標)[Gebre et al.,2017]
 * グループ対話におけるジェスチャ機能認識(韻律，頭，手)[Okada,S et a.]
-
----
-
-### Reference 1
-* Vinciarelli, Alessandro, Maja Pantic, and Hervé Bourlard. "Social signal processing: Survey of an emerging domain." Image and vision computing 27.12 (2009): 1743-1759.
-* D. McNeill, Hand and Mind: What Gestures Reveal about Thought, University of Chicago Press, 1992.
-* A. Kendon, Gesture: Visible Action as Utterance,Cambridge University Press, 2004.
-
----
-
-### Reference 2
-
-* Mitra, Sushmita, and Tinku Acharya. "Gesture recognition: A survey." IEEE Transactions on Systems, Man, and Cybernetics, Part C (Applications and Reviews) 37.3 (2007): 311-324.
-* Madeo, Renata Cristina Barros, Sarajane Marques Peres, and Clodoaldo Aparecido de Moraes Lima. "Gesture phase segmentation using support vector machines." Expert Systems with Applications 56 (2016): 100-115.
-* Tsironi, Eleni, et al. "An analysis of convolutional long short-term memory recurrent neural networks for gesture recognition." Neurocomputing 268 (2017): 76-86.
-* Gebre, Binyam Gebrekidan, Peter Wittenburg, and Przemyslaw Lenkiewicz. "Towards automatic gesture stroke detection." LREC 2012: 8th International Conference on Language Resources and Evaluation. European Language Resources Association, 2012.
-* Okada, Shogo, et al. "Context-based conversational hand gesture classification in narrative interaction." Proceedings of the 15th ACM on International conference on multimodal interaction. ACM, 2013.
 
 ---
 
@@ -208,7 +191,7 @@
 1. 研究目的
 1. 提案手法 
 1. 前回までの進捗
-1. <font color="Red>今回までの進捗</font>
+1. <font color="Red">今回までの進捗</font>
 
 ---
 
@@ -230,24 +213,41 @@
 
 ---
 
+### 現状の問題設定
+* ひとまずラベル数の多い「説明」，「発話調整」に関して，1対多の2値分類をそれぞれ行う．
+* 発話調整にはSMOTEを適応
+* T検定はp=0.05,0.10を適応
+
+---
+
 #### 特量量抽出詳細
 前処理として，各セッションごとに正規化し，
 
 各部位と肩の重心との差分をとった．
 
 時系列情報は潰し，以下の平均と分散を特徴量として使用した．
-1. 13部位の位置，速度，加速度，時間長，一つ前がホールドかどうか(13×3×3 + 2 = )
-2. 13部位の位置，速度，加速度のノルム，両手の距離，時間長，一つ前がホールドかどうか
+
+1. 13部位の位置，速度の3次元ベクトル，時間長(3d)
+2. 13部位の位置，速度，加速度のノルム，両手の距離，手重心と肩重心の距離，時間長
 
 ---
 
-### 実験
+### 実験結果
+<img src="./image/progress02/result.png" width="600"></img>
+
+---
+
+### t検定詳細
+<img src="./image/progress02/ttest.png" width="500"></img>
 
 ---
 
 ### 考察
-* SVMうんぬん以前に特徴量が上手くとれていない．
+* 特徴量が上手くとれていない．
+* ターゲットラベルごとに特徴量の取り方を帰る必要があるかもしれない．
 * 結果を見ると，あまり複雑な特量量じゃないほうが良さそう．
+* 特に時間帳と手の距離は効いていそう．
+* 手の位置や方向などが効く気がするので，方向や角度などなにか良い物理量があれば入れたい．
 
 ---
 
@@ -257,6 +257,24 @@
 * 8月: 他クラス分類問題への拡張.中間発表に準備
 * 9月: 他のモダリティの導入(音声は入れずに顔の特量量を加えてみたい) 
 * 10月: 他の機械学習手法を試す(特にニューラールネット系)
+
+---
+
+
+### Reference 1
+* Vinciarelli, Alessandro, Maja Pantic, and Hervé Bourlard. "Social signal processing: Survey of an emerging domain." Image and vision computing 27.12 (2009): 1743-1759.
+* D. McNeill, Hand and Mind: What Gestures Reveal about Thought, University of Chicago Press, 1992.
+* A. Kendon, Gesture: Visible Action as Utterance,Cambridge University Press, 2004.
+
+---
+
+### Reference 2
+
+* Mitra, Sushmita, and Tinku Acharya. "Gesture recognition: A survey." IEEE Transactions on Systems, Man, and Cybernetics, Part C (Applications and Reviews) 37.3 (2007): 311-324.
+* Madeo, Renata Cristina Barros, Sarajane Marques Peres, and Clodoaldo Aparecido de Moraes Lima. "Gesture phase segmentation using support vector machines." Expert Systems with Applications 56 (2016): 100-115.
+* Tsironi, Eleni, et al. "An analysis of convolutional long short-term memory recurrent neural networks for gesture recognition." Neurocomputing 268 (2017): 76-86.
+* Gebre, Binyam Gebrekidan, Peter Wittenburg, and Przemyslaw Lenkiewicz. "Towards automatic gesture stroke detection." LREC 2012: 8th International Conference on Language Resources and Evaluation. European Language Resources Association, 2012.
+* Okada, Shogo, et al. "Context-based conversational hand gesture classification in narrative interaction." Proceedings of the 15th ACM on International conference on multimodal interaction. ACM, 2013.
 
 ---
 
